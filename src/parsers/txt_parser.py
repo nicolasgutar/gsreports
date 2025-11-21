@@ -83,12 +83,28 @@ def parsear_tipo2(contenido: str) -> pd.DataFrame:
         parts = re.split(r'[\t|]', line)
         
         if len(parts) >= 5:
+            # Parse salario_base safely
+            salario_base = 0.0
+            if len(parts) > 3:
+                try:
+                    salario_base = float(parts[3])
+                except (ValueError, TypeError):
+                    salario_base = 0.0
+            
+            # Parse dias_cotizados safely
+            dias_cotizados = 0
+            if len(parts) > 4:
+                try:
+                    dias_cotizados = int(parts[4])
+                except (ValueError, TypeError):
+                    dias_cotizados = 0
+            
             detalle = {
                 'tipo_documento': parts[0] if len(parts) > 0 else None,
                 'numero_documento': parts[1] if len(parts) > 1 else None,
                 'nombre_completo': parts[2] if len(parts) > 2 else None,
-                'salario_base': float(parts[3]) if len(parts) > 3 and parts[3].replace('.', '').isdigit() else 0.0,
-                'dias_cotizados': int(parts[4]) if len(parts) > 4 and parts[4].isdigit() else 0
+                'salario_base': salario_base,
+                'dias_cotizados': dias_cotizados
             }
             detalles.append(detalle)
     
@@ -254,8 +270,9 @@ def parsear_tipo4(contenido: str) -> pd.DataFrame:
         if not line:
             continue
         
-        # Extract email
-        email_match = re.search(r'[\w\.-]+@[\w\.-]+\.\w+', line)
+        # Extract email - using a more comprehensive regex pattern
+        # This pattern handles most valid email formats including special characters
+        email_match = re.search(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b', line)
         if email_match:
             datos_adicionales['email'] = email_match.group(0)
         
