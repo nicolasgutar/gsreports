@@ -13,11 +13,12 @@ Generate comprehensive financial reports (P&L, Balance Sheet, and Transaction De
 - **Google Sheets Export**: Automatically creates and formats reports in Google Sheets
 - **Date Range Filtering**: Generate reports for specific time periods
 - **Modular Architecture**: Clean separation of concerns for easy maintenance
+- **PILA Planillas Parser**: Parse and match PILA payroll forms with financial logs (see [PLANILLAS_README.md](PLANILLAS_README.md))
 
 ## Project Structure
 
 ```
-reports/
+gsreports/
 ├── main.py                      # Main application entry point
 ├── config.py                    # Configuration management
 ├── db_connector.py              # Database connection handler
@@ -29,7 +30,14 @@ reports/
 ├── requirements.txt             # Python dependencies
 ├── .env.example                 # Environment variables template
 ├── client_secret.json           # Google OAuth credentials (create this)
-└── README.md                    # This file
+├── README.md                    # This file
+├── PLANILLAS_README.md          # PILA planillas parser documentation
+├── notebooks/
+│   └── BuscandoEnLog.ipynb      # PILA planillas matching notebook
+├── src/
+│   └── parsers/
+│       └── txt_parser.py        # Planilla parser functions
+└── Planillas/                   # Directory for planilla files
 ```
 
 ## Installation
